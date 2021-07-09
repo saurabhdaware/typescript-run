@@ -1,0 +1,22 @@
+{
+  "name": "ts-run",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "ts-run": "./src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^8.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.12.15",
+    "ts-node": "^10.0.0"
+  }
+}
