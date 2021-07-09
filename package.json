@@ -1,22 +1,32 @@
 {
   "name": "ts-run",
   "version": "0.0.1",
-  "description": "",
+  "description": "Run TypeScript files with ease and at a lightning speed of esbuild!",
   "main": "src/index.js",
+  "funding": {
+    "type": "patreon",
+    "url": "https://patreon.com/saurabhdaware"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
     "ts-run": "./src/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "commander": "^8.0.0"
+  "keywords": [
+    "typescript",
+    "ts-node",
+    "esbuild"
+  ],
+  "author": "saurabhdaware",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saurabhdaware/ts-run.git"
   },
-  "devDependencies": {
-    "esbuild": "^0.12.15",
-    "ts-node": "^10.0.0"
-  }
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^8.0.0",
+    "esbuild": "^0.12.15"
+  },
+  "devDependencies": {}
 }
