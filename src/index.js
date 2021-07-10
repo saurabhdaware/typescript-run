@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
-const { spawn } = require('child_process');
+const fs = require("fs");
+const path = require("path");
+const { spawn } = require("child_process");
 
-const program = require('commander');
-const esbuild = require('esbuild');
+const program = require("commander");
+const esbuild = require("esbuild");
 
 // Utils
 function rmdirRecursiveSync(pathToRemove) {
@@ -24,11 +24,14 @@ function rmdirRecursiveSync(pathToRemove) {
   }
 }
 
-async function executeCommand(...command) {
+async function executeNodeFile(outFile) {
   return new Promise((resolve, reject) => {
-    const child = spawn(...command);
+    const child = spawn("node", [outFile], {
+      cwd: process.cwd(),
+      stdio: "inherit",
+    });
 
-    child.on('close', (code) => {
+    child.on("close", (code) => {
       if (code === 0) {
         resolve();
       } else {
@@ -39,32 +42,44 @@ async function executeCommand(...command) {
 }
 
 // Main
-program.arguments('<fileName>').action(async (fileName) => {
-  const TEMP_DIR = path.join(__dirname, 'temp')
+program
+  .arguments("<fileName>")
+  .option("-w|--watch")
+  .action(async (fileName, commanderObj) => {
+    const TEMP_DIR = path.join(__dirname, "temp");
+    const entryFile = path.join(process.cwd(), fileName);
+    const outFile = path.join(TEMP_DIR, fileName.replace(".ts", ".js"));
+    const watcher = {
+      onRebuild: async (err, result) => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log("[esbuild]: recompiling project ", result);
+          await executeNodeFile(outFile);
+          rmdirRecursiveSync(TEMP_DIR);
+        }
+      },
+    };
 
-  // 1. clean earlier temp files, if exist
-  rmdirRecursiveSync(TEMP_DIR);
+    // 1. clean earlier temp files, if exist
+    rmdirRecursiveSync(TEMP_DIR);
 
-  const entryFile = path.join(process.cwd(), fileName);
-  const outFile = path.join(TEMP_DIR, fileName.slice(0, -3) + '.js');
+    // 2. Build with esbuild
+    await esbuild
+      .build({
+        entryPoints: [entryFile],
+        bundle: true,
+        watch: commanderObj.watch ? watcher : false,
+        platform: "node",
+        outfile: outFile,
+      })
+      .catch(() => process.exit(1));
 
-  // 2. Build with esbuild
-  await esbuild.build({
-    entryPoints: [entryFile],
-    bundle: true,
-    platform: 'node',
-    outfile: outFile,
-  }).catch(() => process.exit(1))
+    // 3. Run node to run output JS file
+    await executeNodeFile(outFile);
 
-  // 3. Run node to run output JS file
-  await executeCommand('node', [outFile], {
-    cwd: process.cwd(),
-    stdio: [process.stdin, process.stdout, process.stderr]
+    // 4. Remove temporary files
+    rmdirRecursiveSync(TEMP_DIR);
   });
-  
-  // 4. Remove temporary files
-  rmdirRecursiveSync(TEMP_DIR);
-});
-
 
 program.parse(process.argv);
