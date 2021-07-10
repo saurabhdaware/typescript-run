@@ -44,6 +44,8 @@ async function executeNodeFile(outFile) {
 const gray = (str) => `\x1b[90m${str}\x1b[0m`;
 
 // Main
+program.version(require("../package.json").version, "-v|--version");
+
 program
   .arguments("<fileName>")
   .option("-w|--watch", "run in watch mode to listen to file changes")
