@@ -27,6 +27,5 @@
   "dependencies": {
     "commander": "^8.0.0",
     "esbuild": "^0.12.15"
-  },
-  "devDependencies": {}
+  }
 }

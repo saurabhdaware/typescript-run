@@ -4,8 +4,6 @@
 
 Uses [esbuild](https://npmjs.com/package/esbuild) to compile TypeScript to JavaScript.
 
-*Not ready for serious projects*
-
 ## Usage
 
 ```sh
@@ -37,7 +35,9 @@ ts-run src/index.ts --watch
 
 Use `tsc` for builds and `ts-run` for dev-mode.
 
-*Not ready for serious projects!*
+*Warning:*
+- *Not ready for serious projects*
+- *Make sure you check out [ESBuild TypeScript Caveats](https://esbuild.github.io/content-types/#typescript-caveats) first.*
 
 ## Why esbuild?
 
