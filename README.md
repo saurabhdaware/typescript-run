@@ -23,6 +23,15 @@ npm install -g ts-run
 
 ts-run src/index.ts
 ```
+### Options
+
+#### Watch Mode 
+
+Pass `--watch` or `-w` flag to enable watch mode. This will listen to your file changes and re-run the script.
+
+```ts
+ts-run src/index.ts --watch
+```
 
 ## When to use?
 

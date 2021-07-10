@@ -41,10 +41,12 @@ async function executeNodeFile(outFile) {
   });
 }
 
+const gray = (str) => `\x1b[90m${str}\x1b[0m`;
+
 // Main
 program
   .arguments("<fileName>")
-  .option("-w|--watch")
+  .option("-w|--watch", "run in watch mode to listen to file changes")
   .action(async (fileName, commanderObj) => {
     const TEMP_DIR = path.join(__dirname, "temp");
     const entryFile = path.join(process.cwd(), fileName);
@@ -54,10 +56,10 @@ program
         if (err) {
           console.error(err);
         } else {
-          console.log("[esbuild]: recompiling project ", result);
+          console.log(gray("[ts-run]: re-running the files"));
           await executeNodeFile(outFile);
-          rmdirRecursiveSync(TEMP_DIR);
         }
+        rmdirRecursiveSync(TEMP_DIR);
       },
     };
 
@@ -80,6 +82,10 @@ program
 
     // 4. Remove temporary files
     rmdirRecursiveSync(TEMP_DIR);
+
+    if (commanderObj.watch) {
+      console.log(gray("[ts-run]: watching for file changes"));
+    }
   });
 
 program.parse(process.argv);
