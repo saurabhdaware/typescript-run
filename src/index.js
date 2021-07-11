@@ -4,6 +4,7 @@ const path = require("path");
 
 const program = require("commander");
 const esbuild = require("esbuild");
+const chokidar = require("chokidar");
 const {
   colors,
   executeNodeFile,
@@ -11,6 +12,14 @@ const {
   copyFolderSync,
   recursiveFindFiles,
 } = require("./utils.js");
+
+const chokidarOptions = {
+  ignoreInitial: true,
+  awaitWriteFinish: {
+    stabilityThreshold: 100,
+    pollInterval: 100,
+  },
+};
 
 // Main
 program.version(require("../package.json").version, "-v|--version");
@@ -50,28 +59,42 @@ const runTypeScript = async (fileName, commanderObj) => {
     },
   };
 
+  const transpileTypeScript = async () => {
+    await esbuild
+      .build({
+        entryPoints: [entryFile],
+        bundle: true,
+        watch: commanderObj.watch === true ? watcher : false,
+        platform: "node",
+        outfile: outFile,
+      })
+      .catch((err) => {
+        rmdirRecursiveSync(TEMP_DIR);
+        console.error(err);
+        process.exit(1);
+      });
+  };
+
   // 1. clean earlier temp files, if exist
   rmdirRecursiveSync(TEMP_DIR);
 
   // 2. Build with esbuild
-  await esbuild
-    .build({
-      entryPoints: [entryFile],
-      bundle: true,
-      watch: commanderObj.watch ? watcher : false,
-      platform: "node",
-      outfile: outFile,
-    })
-    .catch((err) => {
-      rmdirRecursiveSync(TEMP_DIR);
-      console.error(err);
-      process.exit(1);
-    });
+  await transpileTypeScript();
+
+  // 3. Watch for changes in base, if -w is passed
+  if (commanderObj.watch === "base") {
+    chokidar
+      .watch(basePath, chokidarOptions)
+      .on("all", async (event, fileName) => {
+        await transpileTypeScript();
+        watcher.onRebuild(null, { event, fileName });
+      });
+  }
 
   try {
     copyFolderSync(basePath, outBasePath, recursiveFindFiles(basePath, ".ts"));
 
-    // 3. Run node to run output JS file
+    // 4. Run node to run output JS file
     await executeNodeFile(outFile);
 
     if (commanderObj.watch) {
@@ -80,7 +103,7 @@ const runTypeScript = async (fileName, commanderObj) => {
   } catch (err) {
     console.error(err);
   } finally {
-    // 4. Remove temporary files
+    // 5. Remove temporary files
     rmdirRecursiveSync(TEMP_DIR);
   }
 };
@@ -88,7 +111,10 @@ const runTypeScript = async (fileName, commanderObj) => {
 program
   .arguments("<fileName>")
   .option("-b|--base <basePath>")
-  .option("-w|--watch", "run in watch mode to listen to file changes")
+  .option(
+    "-w|--watch [watcherType]",
+    "run in watch mode to listen to file changes"
+  )
   .action(runTypeScript);
 
 program.parse(process.argv);
