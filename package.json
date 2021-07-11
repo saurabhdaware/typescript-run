@@ -1,6 +1,6 @@
 {
   "name": "typescript-run",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Run TypeScript files with ease and at a lightning speed of esbuild!",
   "main": "src/index.js",
   "funding": {
@@ -11,8 +11,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "ts-run": "./src/index.js",
-    "typescript-run": "./src/index.js"
+    "ts-run": "src/index.js",
+    "typescript-run": "src/index.js"
   },
   "keywords": [
     "typescript",
