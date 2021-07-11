@@ -1,6 +1,6 @@
 {
   "name": "typescript-run",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Run TypeScript files with ease and at a lightning speed of esbuild!",
   "main": "src/index.js",
   "funding": {
