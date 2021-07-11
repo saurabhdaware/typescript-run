@@ -10,6 +10,7 @@ const { spawn } = require("child_process");
 
 const { colors, executeNodeFile } = require("./utils.js");
 
+// configs
 const chokidarOptions = {
   ignoreInitial: true,
   awaitWriteFinish: {

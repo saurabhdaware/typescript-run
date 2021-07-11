@@ -1,4 +1,4 @@
-# ts-run
+# typescript-run
 
 [ts-node](https://npmjs.com/package/ts-node) but extremely fast ⚡️ 
 
@@ -6,21 +6,25 @@ Uses [esbuild](https://npmjs.com/package/esbuild) to compile TypeScript to JavaS
 
 ## Usage
 
+`ts-run` is an alias to `typescript-run`. You can use either of them. Except while running with `npx`, only `typescript-run` will work.
+
 ```sh
-ts-run <file-path>
+typescript-run <file-path> # or `ts-run <file-path>`
+```
+
+Install and run
+```sh
+npm install -g typescript-run
+
+ts-run src/index.ts
 ```
 
 Run directly with `npx`
 ```sh
-npx ts-run src/index.ts
+npx typescript-run src/index.ts
 ```
 
-or install and run
-```sh
-npm install -g ts-run
 
-ts-run src/index.ts
-```
 ### Options
 
 #### Watch Mode 
@@ -40,7 +44,7 @@ This will watch over all the changes in `src` folder.
 
 ## When to use?
 
-Use `tsc` for builds and `ts-run` for dev-mode.
+Use `tsc` for builds and `typescript-run` for dev-mode.
 
 *Warning:*
 - *Not ready for serious projects*
