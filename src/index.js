@@ -8,8 +8,6 @@ const esbuild = require("esbuild");
 const chokidar = require("chokidar");
 const { spawn } = require("child_process");
 
-const { colors, executeNodeFile } = require("./utils.js");
-
 // configs
 const chokidarOptions = {
   ignoreInitial: true,
