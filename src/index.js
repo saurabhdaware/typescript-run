@@ -92,9 +92,10 @@ const runTypeScript = async (fileName, commanderObj) => {
   }
 
   try {
+    // 4. Copy base directory to temp (for static assets)
     copyFolderSync(basePath, outBasePath, recursiveFindFiles(basePath, ".ts"));
 
-    // 4. Run node to run output JS file
+    // 5. Run node to run output JS file
     await executeNodeFile(outFile);
 
     if (commanderObj.watch) {
