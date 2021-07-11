@@ -22,7 +22,7 @@
   "author": "saurabhdaware",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/saurabhdaware/ts-run.git"
+    "url": "git+https://github.com/saurabhdaware/typescript-run.git"
   },
   "license": "MIT",
   "dependencies": {
