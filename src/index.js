@@ -126,7 +126,6 @@ const runTypeScript = async (fileName, commanderObj) => {
 
 program
   .arguments("<fileName>")
-  .option("-b|--base <basePath>")
   .option(
     "-w|--watch [watcherPath]",
     "run in watch mode to listen to file changes"
