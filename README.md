@@ -4,26 +4,29 @@
 
 Uses [esbuild](https://npmjs.com/package/esbuild) to compile TypeScript to JavaScript.
 
+## Install
+
+Install globally
+```sh
+npm i -g typescript-run
+
+ts-run ./src/index.ts
+```
+
+*or*
+
+Execute with `npx`
+```sh
+npx typescript-run ./src/index.ts
+```
+
 ## Usage
 
-`ts-run` is an alias to `typescript-run`. You can use either of them. Except while running with `npx`, only `typescript-run` will work.
+`ts-run` is an alias to `typescript-run`. You can use either of them.
 
 ```sh
 typescript-run <file-path> # or `ts-run <file-path>`
 ```
-
-Install and run
-```sh
-npm install -g typescript-run
-
-ts-run src/index.ts
-```
-
-Run directly with `npx`
-```sh
-npx typescript-run src/index.ts
-```
-
 
 ### Options
 
