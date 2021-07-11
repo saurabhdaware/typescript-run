@@ -27,9 +27,16 @@ ts-run src/index.ts
 
 Pass `--watch` or `-w` flag to enable watch mode. This will listen to your file changes and re-run the script.
 
-```ts
+```sh
 ts-run src/index.ts --watch
 ```
+
+By default, watch flag will watch over the files that are going to part of your bundle (`.ts` `.js` files imported in entry file). You can also override this behavior by passing path to `--watch` flag with-
+```sh
+ts-run src/index.ts --watch src
+```
+
+This will watch over all the changes in `src` folder.
 
 ## When to use?
 
