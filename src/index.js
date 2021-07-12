@@ -71,14 +71,15 @@ const runTypeScript = async (fileName, commanderObj) => {
     },
   };
 
-  const transpileTypeScript = async () => {
+  const transpileTypeScript = () => {
     try {
-      await esbuild.build({
+      return esbuild.build({
         entryPoints: [entryFile],
         bundle: true,
         watch: commanderObj.watch === true ? watcher : false,
         platform: "node",
         outfile: outFile,
+        incremental: true,
       });
     } catch (err) {
       removeFileIfExist(outFile);
@@ -91,7 +92,7 @@ const runTypeScript = async (fileName, commanderObj) => {
   removeFileIfExist(outFile);
 
   // 2. Build with esbuild
-  await transpileTypeScript();
+  const esbuildResult = await transpileTypeScript();
 
   // 3. Watch for changes in base, if -w is passed
   if (typeof commanderObj.watch === "object") {
@@ -99,7 +100,7 @@ const runTypeScript = async (fileName, commanderObj) => {
       chokidar
         .watch(path.join(process.cwd(), watchPath), chokidarOptions)
         .on("all", async (event, fileName) => {
-          await transpileTypeScript();
+          await esbuildResult.rebuild(); // incremental rebuild
           watcher.onRebuild(null, { event, fileName });
         });
     }
