@@ -45,6 +45,8 @@ ts-run src/index.ts --watch src
 
 This will watch over all the changes in `src` folder.
 
+You can also pass multiple directories with `--watch src examples`. This will watch over `src` and `examples` both
+
 ## When to use?
 
 Use `tsc` for builds and `typescript-run` for dev-mode.

@@ -94,13 +94,15 @@ const runTypeScript = async (fileName, commanderObj) => {
   await transpileTypeScript();
 
   // 3. Watch for changes in base, if -w is passed
-  if (typeof commanderObj.watch === "string") {
-    chokidar
-      .watch(path.join(process.cwd(), commanderObj.watch), chokidarOptions)
-      .on("all", async (event, fileName) => {
-        await transpileTypeScript();
-        watcher.onRebuild(null, { event, fileName });
-      });
+  if (typeof commanderObj.watch === "object") {
+    for (const watchPath of commanderObj.watch) {
+      chokidar
+        .watch(path.join(process.cwd(), watchPath), chokidarOptions)
+        .on("all", async (event, fileName) => {
+          await transpileTypeScript();
+          watcher.onRebuild(null, { event, fileName });
+        });
+    }
   }
 
   try {
@@ -109,10 +111,12 @@ const runTypeScript = async (fileName, commanderObj) => {
 
     if (commanderObj.watch === true) {
       console.log(colors.gray("[ts-run]: watching for file changes"));
-    } else if (typeof commanderObj.watch === "string") {
+    } else if (typeof commanderObj.watch === "object") {
       console.log(
         colors.gray(
-          `[ts-run]: watching for file changes in ${commanderObj.watch}`
+          `[ts-run]: watching for file changes in ${commanderObj.watch.join(
+            ", "
+          )}`
         )
       );
     }
@@ -127,7 +131,7 @@ const runTypeScript = async (fileName, commanderObj) => {
 program
   .arguments("<fileName>")
   .option(
-    "-w|--watch [watcherPath]",
+    "-w|--watch [watcherPath...]",
     "run in watch mode to listen to file changes"
   )
   .action(runTypeScript);
