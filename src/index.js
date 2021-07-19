@@ -79,7 +79,7 @@ const runTypeScript = async (fileName, commanderObj) => {
         watch: commanderObj.watch === true ? watcher : false,
         platform: "node",
         outfile: outFile,
-        incremental: true,
+        incremental: commanderObj.watch ? true : false,
       });
     } catch (err) {
       removeFileIfExist(outFile);
