@@ -100,6 +100,12 @@ const runTypeScript = async (fileName, commanderObj) => {
       chokidar
         .watch(path.join(process.cwd(), watchPath), chokidarOptions)
         .on("all", async (event, fileName) => {
+          if (
+            event === "unlink" &&
+            fileName.endsWith(".temp-bundle.ts-run.js")
+          ) {
+            return;
+          }
           await esbuildResult.rebuild(); // incremental rebuild
           watcher.onRebuild(null, { event, fileName });
         });
