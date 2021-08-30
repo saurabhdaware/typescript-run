@@ -25,8 +25,15 @@ const removeFileIfExist = (pathToDelete) => {
 };
 
 async function executeNodeFile(outFile) {
+  let parentArgs;
+  if (process.argv.includes("-w") || process.argv.includes("--watch")) {
+    parentArgs = process.argv.slice(3, process.argv.indexOf("-w"));
+  } else {
+    parentArgs = process.argv.slice(3);
+  }
+
   return new Promise((resolve, reject) => {
-    const child = spawn("node", [outFile], {
+    const child = spawn("node", [outFile, ...parentArgs], {
       cwd: process.cwd(),
       stdio: "inherit",
     });
