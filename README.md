@@ -4,6 +4,7 @@
 
 Uses [esbuild](https://npmjs.com/package/esbuild) to compile TypeScript to JavaScript.
 
+[Run Demo on StackBlitz](https://stackblitz.com/edit/node-vhctbs?file=index.ts)
 ## Install
 
 Install globally
