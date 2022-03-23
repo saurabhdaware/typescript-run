@@ -24,16 +24,18 @@ const removeFileIfExist = (pathToDelete) => {
   }
 };
 
-async function executeNodeFile(outFile) {
-  let parentArgs;
-  if (process.argv.includes("-w") || process.argv.includes("--watch")) {
-    parentArgs = process.argv.slice(3, process.argv.indexOf("-w"));
-  } else {
-    parentArgs = process.argv.slice(3);
-  }
+function paramsForChild(args) {
+  if (args.includes('--'))
+      return args.slice(args.indexOf('--') + 1)
+  else if (args.includes('-w') || args.includes('--watch'))
+      return args.slice(Math.max(args.indexOf('-w'), args.indexOf('--watch')) + 2)
+  return []
+}
 
+async function executeNodeFile(outFile) {
+  const args = paramsForChild(process.argv);  
   return new Promise((resolve, reject) => {
-    const child = spawn("node", [outFile, ...parentArgs], {
+    const child = spawn("node", [outFile, ...args], {
       cwd: process.cwd(),
       stdio: "inherit",
     });
