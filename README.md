@@ -1,5 +1,15 @@
 # typescript-run
 
+> **Warning**
+>
+> Deprecated. I started this project to-
+> - Execute typescript files faster 
+> - have a `--watch` mode on them.
+>
+> [Bun](https://bun.sh/) has solved for both the cases in more performant way. So do check it out instead.
+>
+> You can also checkout [tsx](https://github.com/esbuild-kit/tsx) which has solved for both the cases as well.
+
 [ts-node](https://npmjs.com/package/ts-node) but extremely fast ⚡️ 
 
 Uses [esbuild](https://npmjs.com/package/esbuild) to compile TypeScript to JavaScript.
